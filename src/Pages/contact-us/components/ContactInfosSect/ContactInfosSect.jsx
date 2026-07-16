@@ -23,9 +23,9 @@ export default function ContactInfosSect() {
             viewport={{ once: true, amount: 0.7 }}
           >
             <img
-              src="/Mail.png"
+              src="/Mail.webp"
               alt="mail image"
-              className="w-[400px]  mx-auto hidden lg:block"
+              className="w-[400px] h-auto  mx-auto hidden lg:block"
             />
           </motion.div>
           <div className="flex flex-col text-xl lg:text-2xl">
@@ -34,9 +34,9 @@ export default function ContactInfosSect() {
               whileInView={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1 }}
               viewport={{ once: true, amount: 0.7 }}
-              src="/Telephone.png"
+              src="/Telephone.webp"
               alt="vintage telephone image"
-              className="mx-auto w-96"
+              className="mx-auto w-96 h-auto"
             />
             <motion.div
               className="flex justify-end gap-x-5"
@@ -82,7 +82,7 @@ export default function ContactInfosSect() {
             transition={{ duration: 0.7 }}
             viewport={{ once: true, amount: 0.7 }}
           >
-            <img src="/building.png" alt="Building Image" />
+            <img src="/building.webp" alt="Building Image" className="w-full h-full" />
           </motion.div>
         </div>
       </div>

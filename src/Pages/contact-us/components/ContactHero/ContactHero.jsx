@@ -11,7 +11,7 @@ export default function ContactHero() {
   return (
     <section className="h-[400px] relative">
       <img
-        src="/ContactUsHero.jpg"
+        src="/ContactUsHero.webp"
         className="object-cover object-[40%_60%] absolute w-full h-full"
         alt="Contact us hero image"
       />

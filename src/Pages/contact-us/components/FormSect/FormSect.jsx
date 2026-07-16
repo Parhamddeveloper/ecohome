@@ -58,7 +58,7 @@ export default function FormSect() {
             transition={{ duration: 1 }}
             className="flex justify-center lg:justify-end order-1 lg:order-2"
           >
-            <img src="/AboutUsFormImg.png" />
+            <img src="/AboutUsFormImg.webp" />
           </motion.div>
         </div>
       </section>

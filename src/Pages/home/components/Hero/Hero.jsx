@@ -6,7 +6,7 @@ export default function Hero() {
     <>
       <section className="relative h-[650px] overflow-hidden">
         <img
-          src="/hero.jpg"
+          src="/hero.webp"
           className="absolute inset-0 w-full h-full object-cover "
           alt=""
         />

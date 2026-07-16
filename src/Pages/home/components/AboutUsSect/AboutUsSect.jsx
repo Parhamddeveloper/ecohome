@@ -7,7 +7,7 @@ export default function AboutUsSect() {
           initial={{ x: 50, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.75 }}
-          src="/hero.jpg"
+          src="/hero.webp"
           alt="دکوراسیون خانه"
           className="rounded-2xl shadow-2xl"
         />

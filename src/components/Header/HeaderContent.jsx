@@ -13,7 +13,7 @@ export default function HeaderContent({offCanvasHandler}) {
       <button className="md:hidden" onClick={offCanvasHandler}>
         <GiHamburgerMenu className="text-3xl" />
       </button>
-      <HeaderLogo image={"/EcoHomeLogo.png"} />
+      <HeaderLogo image={"/EcoHomeLogo.webp"} />
       <nav className="hidden md:flex flex-1 justify-center">
         <ul className="flex gap-8 text-[15px] font-medium">
           <li>
