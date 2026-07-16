@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 export default function FormSect() {
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
   return (
     <>
       <section className="bg-[#e0dbd5] dark:bg-gray-800 dark:text-white transition-colors duration-500 overflow-hidden">
@@ -8,14 +10,14 @@ export default function FormSect() {
             <motion.h2
               className="text-2xl text-center font-bold lg:text-start"
               initial={{ x: 90, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
+              animate={isImgLoaded &&{ x: 0, opacity: 1 }}
               transition={{ duration: 1 }}
             >
               ایده خود را به اشتراک بگذارید
             </motion.h2>
             <motion.form
               initial={{ x: 90, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
+              animate={isImgLoaded && { x: 0, opacity: 1 }}
               transition={{ duration: 1 }}
               className="w-full flex flex-col gap-y-3 mt-7"
             >
@@ -54,11 +56,14 @@ export default function FormSect() {
           </div>
           <motion.div
             initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+            animate={isImgLoaded && { scale: 1, opacity: 1 }}
             transition={{ duration: 1 }}
             className="flex justify-center lg:justify-end order-1 lg:order-2"
           >
-            <img src="/AboutUsFormImg.webp" />
+            <img
+              src="/AboutUsFormImg.webp"
+              onLoad={() => setIsImgLoaded(true)}
+            />
           </motion.div>
         </div>
       </section>

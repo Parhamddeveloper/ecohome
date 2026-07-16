@@ -7,6 +7,7 @@ export default function AboutUsSect() {
           initial={{ x: 50, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.75 }}
+          viewport={{ once: true, amount: 0.7 }}
           src="/hero.webp"
           alt="دکوراسیون خانه"
           className="rounded-2xl shadow-2xl"
@@ -15,6 +16,7 @@ export default function AboutUsSect() {
           initial={{ x: -50, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.75 }}
+          viewport={{ once: true, amount: 0.7 }}
           className="flex flex-col gap-y-4"
         >
           <h2 className="text-3xl font-bold">درباره ما</h2>
