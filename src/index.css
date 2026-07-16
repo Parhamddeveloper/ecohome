@@ -1,0 +1,14 @@
+@custom-variant dark (.dark &);
+@import "tailwindcss";
+
+.bg-main {
+  background-color: #e0dbd5;
+}
+.bg-2 {
+  background-color: #fbf6f0;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
