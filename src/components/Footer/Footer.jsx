@@ -20,30 +20,30 @@ export default function Footer() {
             <nav className="grid grid-cols-2 mt-5">
               <ul className="gap-y-2 flex flex-col">
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
-                  <Link>خانه</Link>
+                  <Link to={"/"}>خانه</Link>
                 </li>
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
-                  <Link>نمونه کار ها</Link>
+                  <Link to={"/projects"}>نمونه کار ها</Link>
                 </li>
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
-                  <Link>سبد خرید</Link>
+                  <Link to={"/shopping-cart"}>سبد خرید</Link>
                 </li>
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
-                  <Link>آدرس</Link>
+                  <Link to={"/contact-us"}>آدرس</Link>
                 </li>
               </ul>
               <ul className="gap-y-2 flex flex-col">
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
-                  <Link>درباره ما</Link>
+                  <Link to={"/about-us"}>درباره ما</Link>
                 </li>
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
-                  <Link>رضایت مشتری</Link>
+                  <Link to={"/testimonials"}>رضایت مشتری</Link>
                 </li>
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
-                  <Link>ارتباط با ما</Link>
+                  <Link to={"/contact-us"}>تماس با ما</Link>
                 </li>
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
-                  <Link>راه های ارتباطی</Link>
+                  <Link to={"/contact-us"}>راه های ارتباطی</Link>
                 </li>
               </ul>
             </nav>
@@ -70,16 +70,16 @@ export default function Footer() {
             <p className="mt-5">@parham___danesh</p>
             <p>@parhamddeveloper</p>
             <div className="flex gap-x-4 mt-7 text-xl justify-center md:justify-normal ">
-              <Link className="dark:bg-black p-1.5 rounded-2xl bg-[#fbf6f0] transition-colors">
+              <Link className="dark:bg-black p-1.5 rounded-2xl bg-[#fbf6f0] transition-colors" aria-label="صفحه فیسبوک">
                 <FaFacebookF />
               </Link>
-              <Link className="dark:bg-black p-1.5 rounded-2xl bg-[#fbf6f0] transition-colors">
+              <Link className="dark:bg-black p-1.5 rounded-2xl bg-[#fbf6f0] transition-colors" aria-label="صفحه اینستاگرام">
                 <FaInstagram />
               </Link>
-              <Link className="dark:bg-black p-1.5 rounded-2xl bg-[#fbf6f0] transition-colors">
+              <Link className="dark:bg-black p-1.5 rounded-2xl bg-[#fbf6f0] transition-colors" aria-label="صفحه یوتیوب">
                 <FaYoutube />
               </Link>
-              <Link className="dark:bg-black p-1.5 rounded-2xl bg-[#fbf6f0] transition-colors">
+              <Link className="dark:bg-black p-1.5 rounded-2xl bg-[#fbf6f0] transition-colors" aria-label="صفحه آمازون">
                 <FaAmazon />
               </Link>
             </div>

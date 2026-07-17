@@ -31,7 +31,7 @@ export default function OffCanvas({ offCanvasHandler }) {
         transition={{ type: "spring", stiffness: 260, damping: 30 }}
       >
         <div className="flex justify-between items-center">
-          <button aria-label="close canvas button">
+          <button aria-label="بستن منوی ناوبری">
             <IoMdClose className="text-3xl" onClick={offCanvasHandler} />
           </button>
           <BtnToggleTheme />

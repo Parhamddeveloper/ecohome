@@ -10,7 +10,7 @@ export default function HeaderContent({offCanvasHandler}) {
 
   return (
     <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between md:justify-normal items-center">
-      <button className="md:hidden" onClick={offCanvasHandler}>
+      <button className="md:hidden" onClick={offCanvasHandler} aria-label="باز کردن منوی ناوبری">
         <GiHamburgerMenu className="text-3xl" />
       </button>
       <HeaderLogo image={"/EcoHomeLogo.webp"} />

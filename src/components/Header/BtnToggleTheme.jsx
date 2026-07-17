@@ -9,6 +9,7 @@ export default function BtnToggleTheme() {
     <motion.button
       onClick={ToggleTheme}
       className="border-2 border-[#869074] p-2 rounded-lg text-black dark:text-white cursor-pointer overflow-hidden"
+      aria-label={Theme === "dark" ? "فعال کردن حالت روشن" : "فعال کردن حالت تیره"}
     >
       <AnimatePresence mode="wait">
         {Theme === "dark" ? (
