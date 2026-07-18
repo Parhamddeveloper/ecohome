@@ -10,10 +10,10 @@ export default function ContactInfosSect() {
     Building: false,
   });
   return (
-    <section className="bg-[#e0dbd5] dark:bg-gray-800 dark:text-white transition-colors duration-500 overflow-hidden">
+    <section className="bg-[#e0dbd5] dark:bg-gray-800 dark:text-white transition-colors duration-500 overflow-hidden font-estedad">
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-2xl text-center font-bold"
+          className="text-2xl text-center font-estedad-extra-bold"
           initial={{ scale: 0.85, opacity: 0 }}
           whileInView={
             isImgLoaded.Mail &&
@@ -95,7 +95,7 @@ export default function ContactInfosSect() {
             viewport={{ once: true, amount: 0.7 }}
             className="pt-5 lg:pt-10"
           >
-            <h3 className="text-2xl font-bold text-center lg:text-start">
+            <h3 className="text-2xl font-estedad-extra-bold text-center lg:text-start">
               به استودیو طراحی ما سر بزنید
             </h3>
             <div className="flex items-center text-2xl mt-7 gap-x-3 lg:w-2/3 ">

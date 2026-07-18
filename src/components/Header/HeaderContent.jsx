@@ -9,7 +9,7 @@ import BtnToggleTheme from "./BtnToggleTheme";
 export default function HeaderContent({offCanvasHandler}) {
 
   return (
-    <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between md:justify-normal items-center">
+    <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between md:justify-normal items-center font-estedad">
       <button className="md:hidden" onClick={offCanvasHandler} aria-label="باز کردن منوی ناوبری">
         <GiHamburgerMenu className="text-3xl" />
       </button>

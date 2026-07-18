@@ -16,12 +16,12 @@ export default function Hero() {
           onLoad={()=> setIsImgLoaded(true)}
         />
         <div className="absolute inset-0 bg-black opacity-50"></div>
-       <div className="relative z-10 px-10 mx-auto h-full flex flex-col md:items-start justify-center lg:px-24 gap-y-4">
+       <div className="relative z-10 px-10 mx-auto h-full flex flex-col md:items-start justify-center lg:px-24 gap-y-4 font-estedad">
           <motion.h1
             initial={{ x: 90, opacity: 0 }}
             animate={isImgLoaded && { x: 0, opacity: 1 }}
             transition={{ duration: 1 }}
-            className="text-3xl lg:text-6xl font-black text-white"
+            className="text-3xl lg:text-6xl font-estedad-extra-bold text-white"
           >
             با اکوهوم، خانه خود را درخشان کنید
           </motion.h1>

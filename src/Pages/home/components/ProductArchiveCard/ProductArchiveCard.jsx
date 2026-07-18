@@ -6,7 +6,7 @@ export default function ProductArchiveCard({ image, title, text, price }) {
       transition={{ duration: 1 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      className="rounded-3xl shadow-2xl py-4 text-center px-5 bg-[#fbf6f0] dark:bg-gray-600 dark:text-white transition-colors duration-500"
+      className="rounded-3xl shadow-2xl py-4 text-center px-5 bg-[#fbf6f0] dark:bg-gray-600 dark:text-white transition-colors duration-500 font-estedad"
     >
       <img
         src={image.thumbnail}

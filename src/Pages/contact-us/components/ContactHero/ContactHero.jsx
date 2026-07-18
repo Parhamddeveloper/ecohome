@@ -24,10 +24,10 @@ export default function ContactHero() {
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7 }}
-          className="relative z-10 flex flex-col gap-y-4 h-full w-full justify-center items-center text-white"
+          className="relative z-10 flex flex-col gap-y-3 h-full w-full justify-center items-center text-white"
         >
-          <h1 className="text-4xl font-bold">با اکوهوم در ارتباط باشید</h1>
-          <p>بیاید با هم دکور مورد علاقه شما را بسازیم</p>
+          <h1 className="text-4xl font-estedad-extra-bold">با اکوهوم در ارتباط باشید</h1>
+          <p className="font-estedad text-xl">بیاید با هم دکور مورد علاقه شما را بسازیم</p>
         </motion.div>
       )}
     </section>

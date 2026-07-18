@@ -13,10 +13,10 @@ import { IoMdMail } from "react-icons/io";
 export default function Footer() {
   return (
     <>
-      <footer className="bg-[#ebdbc8] dark:bg-gray-700 dark:text-white pt-7 transition-colors duration-500">
+      <footer className="bg-[#ebdbc8] dark:bg-gray-700 dark:text-white pt-7 transition-colors duration-500 font-estedad">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 max-w-7xl mx-5 xl:mx-auto text-center md:text-start gap-y-6">
           <div>
-            <h2 className="text-xl font-bold">لینک های پر استفاده</h2>
+            <h2 className="text-xl font-estedad-extra-bold">لینک های پر استفاده</h2>
             <nav className="grid grid-cols-2 mt-5">
               <ul className="gap-y-2 flex flex-col">
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
@@ -49,7 +49,7 @@ export default function Footer() {
             </nav>
           </div>
           <div>
-            <h2 className="text-xl font-bold">ارتباط با ما</h2>
+            <h2 className="text-xl font-estedad-extra-bold">ارتباط با ما</h2>
             <ul className="flex flex-col gap-y-3 mt-5 items-center lg:items-start">
               <li className="flex items-center gap-x-2">
                 <FaPhoneFlip /> <span dir="ltr">+989125898651</span>{" "}
@@ -66,7 +66,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h2 className="text-xl font-bold">شبکه های اجتماعی</h2>
+            <h2 className="text-xl font-estedad-extra-bold">شبکه های اجتماعی</h2>
             <p className="mt-5">@parham___danesh</p>
             <p>@parhamddeveloper</p>
             <div className="flex gap-x-4 mt-7 text-xl justify-center md:justify-normal ">
@@ -85,7 +85,7 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h2 className="text-xl font-bold">باشگاه مشتریان</h2>
+            <h2 className="text-xl font-estedad-extra-bold">باشگاه مشتریان</h2>
             <div className="mt-5">
               <h3> برای عضویت در باشگاه ایمیل خود را وارد کنید</h3>
               <div className="flex mt-4 justify-center">

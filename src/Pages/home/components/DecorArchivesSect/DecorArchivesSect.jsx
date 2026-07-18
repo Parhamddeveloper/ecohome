@@ -16,7 +16,7 @@ export default function DecorArchivesSect() {
           transition={{ duration: 1 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          className="text-center text-3xl font-bold my-6 lg:mb-7 dark:text-white"
+          className="text-center text-3xl font-estedad-bold my-6 lg:mb-7 dark:text-white"
         >
           آرشیو دکور ها
         </motion.h2>

@@ -4,11 +4,11 @@ export default function FormSect() {
   const [isImgLoaded, setIsImgLoaded] = useState(false);
   return (
     <>
-      <section className="bg-[#e0dbd5] dark:bg-gray-800 dark:text-white transition-colors duration-500 overflow-hidden">
+      <section className="bg-[#e0dbd5] dark:bg-gray-800 dark:text-white transition-colors duration-500 overflow-hidden font-estedad">
         <div className="max-w-7xl mx-4 xl:mx-auto grid grid-cols-1 lg:grid-cols-2 py-6 items-center">
           <div className="order-2 lg:order-1">
             <motion.h2
-              className="text-2xl text-center font-bold lg:text-start"
+              className="text-2xl text-center font-estedad-bold lg:text-start"
               initial={{ x: 90, opacity: 0 }}
               animate={isImgLoaded &&{ x: 0, opacity: 1 }}
               transition={{ duration: 1 }}

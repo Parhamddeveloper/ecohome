@@ -19,11 +19,11 @@ export default function AboutUsSect() {
           viewport={{ once: true, amount: 0.7 }}
           className="flex flex-col gap-y-4"
         >
-          <h2 className="text-3xl font-bold">درباره ما</h2>
-          <h3 className="text-xl font-bold">
+          <h2 className="text-3xl font-estedad-bold">درباره ما</h2>
+          <h3 className="text-xl font-estedad-bold">
             ما شرکت تولید کننده دکور های خانه سازگار محیط زیست هستیم
           </h3>
-          <p className="text-lg text-justify font-black">
+          <p className="text-lg text-justify font-estedad-light">
             لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
             استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
             ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و
