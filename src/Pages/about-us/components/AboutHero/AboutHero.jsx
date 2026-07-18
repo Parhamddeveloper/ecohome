@@ -13,13 +13,8 @@ export default function AboutHero() {
         />
         <div className="inset-0 bg-black/45 absolute"></div>
         <motion.div initial={{scale:0.75,opacity : 0}} animate={isImgLoaded && {scale:1,opacity:1}} transition={{duration : 0.6}} className="relative flex flex-col items-center justify-center h-full w-full gap-y-4 text-white font-bold text-center">
-<<<<<<< HEAD
           <h1 className="text-3xl font-estedad-extra-bold" >ما پویایی خانه سبز هستیم</h1>
           <p className="text-2xl font-estedad">داستان ما را بدانید و با اعضای تیم ما آشنا شوید</p>
-=======
-          <h1 className="text-3xl" >ما پویایی خانه سبز هستیم</h1>
-          <p className="text-2xl">داستان ما را بدانید و با اعضای تیم ما آشنا شوید</p>
->>>>>>> 685af7ae318c652881074ef6f0cd67eaf13336db
         </motion.div>
       </section>
     </>
