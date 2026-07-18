@@ -4,7 +4,7 @@ import { SlArrowDown } from "react-icons/sl";
 export default function Accordion({ id, question, answer }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="bg-[#ece3d8] dark:bg-gray-600 dark:text-white border rounded-xl p-3 font-estedad transition-colors duration-500">
+    <motion.div initial={{opacity : 0,y:40}} animate={{opacity : 1,y:0}} transition={{duration:0.5}} className="bg-[#ece3d8] dark:bg-gray-600 dark:text-white border rounded-xl p-3 font-estedad transition-colors duration-500">
       <button
         className="flex w-full justify-between items-center cursor-pointer px-3"
         id={`faq-question-${id}`}
@@ -38,6 +38,6 @@ export default function Accordion({ id, question, answer }) {
           <p>{answer}</p>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
