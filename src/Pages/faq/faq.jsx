@@ -1,7 +1,12 @@
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer"
+import AccordionSect from "./components/AccordionSect";
 export default function FAQ() {
-    return(
-        <>
-            <h1>FAQ</h1>
-        </>
-    )
-};
+  return (
+    <>
+      <Header />
+      <AccordionSect/>
+      <Footer/>
+    </>
+  );
+}

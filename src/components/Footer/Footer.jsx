@@ -29,7 +29,7 @@ export default function Footer() {
                   <Link to={"/shopping-cart"}>سبد خرید</Link>
                 </li>
                 <li className="hover:dark:text-[#ebdbc8] hover:text-[#8c7171] transition-colors">
-                  <Link to={"/contact-us"}>آدرس</Link>
+                  <Link to={"/faq"}>سوالات متداول</Link>
                 </li>
               </ul>
               <ul className="gap-y-2 flex flex-col">
