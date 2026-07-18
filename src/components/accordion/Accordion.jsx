@@ -6,7 +6,7 @@ export default function Accordion({ id, question, answer }) {
   return (
     <div className="bg-[#ece3d8] dark:bg-gray-600 dark:text-white border rounded-xl p-3 font-estedad transition-colors duration-500">
       <button
-        className="flex w-full justify-between cursor-pointer px-3"
+        className="flex w-full justify-between items-center cursor-pointer px-3"
         id={`faq-question-${id}`}
         aria-expanded={isOpen}
         aria-controls={`faq-answer-${id}`}
