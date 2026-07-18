@@ -8,7 +8,11 @@ export default function OurGoalsSect() {
         initial={{ y: 90, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1 }}
+<<<<<<< HEAD
         className="dark:text-white text-4xl font-estedad-bold text-center py-6"
+=======
+        className="dark:text-white text-3xl font-bold text-center py-6"
+>>>>>>> 685af7ae318c652881074ef6f0cd67eaf13336db
       >
         اهداف تیم ما
       </motion.h2>

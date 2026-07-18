@@ -83,6 +83,7 @@ export function TeamCarousel() {
                     className="w-40 h-40 rounded-full object-cover mx-auto"
                   />
 
+<<<<<<< HEAD
                   <h3 className="mt-4 text-xl font-estedad-bold dark:text-white">
                     {item.name}
                   </h3>
@@ -92,6 +93,17 @@ export function TeamCarousel() {
                   </p>
 
                   <p className="text-gray-600 dark:text-gray-300 text-sm mt-2 leading-7 font-estedad">
+=======
+                  <h3 className="mt-4 text-xl font-bold dark:text-white">
+                    {item.name}
+                  </h3>
+
+                  <p className="text-[#869074] font-medium mt-1">
+                    {item.role}
+                  </p>
+
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mt-2 leading-7">
+>>>>>>> 685af7ae318c652881074ef6f0cd67eaf13336db
                     {item.text}
                   </p>
                 </div>
