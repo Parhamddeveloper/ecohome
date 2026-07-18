@@ -19,15 +19,24 @@ export default function Accordion({ id, question, answer }) {
         />
       </button>
       <motion.div
-        initial={{ height: 0 }}
-        animate={isOpen ? { height: "auto", paddingTop: 10 } : { height: 0 }}
-        transition={{ duration: 0.3 }}
-        className={`overflow-hidden px-3`}
-        id={`faq-answer-${id}`}
-        role="region"
-        aria-labelledby={`faq-question-${id}`}
+        initial={false}
+        animate={{
+          height: isOpen ? "auto" : 0,
+          opacity: isOpen ? 1 : 0,
+        }}
+        transition={{
+          height: {
+            duration: 0.3,
+          },
+          opacity: {
+            duration: 0.2,
+          },
+        }}
+        className="overflow-hidden"
       >
-        <p>{answer}</p>
+        <div className="px-3 pt-3">
+          <p>{answer}</p>
+        </div>
       </motion.div>
     </div>
   );
