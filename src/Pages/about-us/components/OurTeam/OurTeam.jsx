@@ -8,11 +8,7 @@ export default function OurTeam() {
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 1 }}
         viewport={{ once: true, amount: 0.7 }}
-<<<<<<< HEAD
         className="text-center text-4xl font-estedad-bold dark:text-white"
-=======
-        className="text-center text-3xl font-bold dark:text-white"
->>>>>>> 685af7ae318c652881074ef6f0cd67eaf13336db
       >
         اعضای تیم ما
       </motion.h2>
