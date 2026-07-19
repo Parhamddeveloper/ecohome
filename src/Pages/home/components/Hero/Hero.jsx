@@ -38,14 +38,16 @@ export default function Hero() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={isImgLoaded &&{ scale: 1, opacity: 1 }}
               transition={{duration : 0.8}}
+              to={"/projects"}
               className="bg-[#869074] text-white w-34 py-2.5 rounded-lg font-bold text-center transition-transform hover:scale-105"
             >
-              پروژه
+              پروژه ها
             </MotionLink>
             <MotionLink
               initial={{ scale: 0.95, opacity: 0 }}
               animate={isImgLoaded &&{ scale: 1, opacity: 1 }}
               transition={{duration : 0.8}}
+              to={"/about-us"}
               className="bg-[#ffffff] text-black w-34  py-2.5 rounded-lg font-bold text-center transition-transform hover:scale-105"
             >
               درباره ما
