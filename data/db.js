@@ -214,28 +214,42 @@ export const projects = [
   },
   {
     id: 2,
-    thumbnail: "/hero.webp",
+    thumbnail: "/project1.jpg",
     title: "استودیو سبز",
     text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
     type : "renovation"
   },
   {
     id: 3,
-    thumbnail: "/hero.webp",
+    thumbnail: "/project2.jpg",
     title: "استودیو سبز",
     text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
     type : "commercial"
   },
   {
     id: 4,
-    thumbnail: "/hero.webp",
+    thumbnail: "/project3.jpg",
     title: "استودیو سبز",
     text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
     type : "commercial"
   },
   {
     id: 5,
-    thumbnail: "/hero.webp",
+    thumbnail: "/project4.jpg",
+    title: "استودیو سبز",
+    text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
+    type : "commercial"
+  },
+    {
+    id: 6,
+    thumbnail: "/project5.jpg",
+    title: "استودیو سبز",
+    text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
+    type : "commercial"
+  },
+    {
+    id: 7,
+    thumbnail: "/project6.jpg",
     title: "استودیو سبز",
     text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
     type : "commercial"

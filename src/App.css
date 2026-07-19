@@ -1,28 +1,32 @@
 @font-face {
-    font-family: estedad;
-    src: url("/fonts/Estedad-Regular.ttf");
+  font-family: estedad;
+  src: url("/fonts/Estedad-Regular.ttf");
+  font-display: swap;
 }
 @font-face {
-    font-family: estedad-light;
-    src: url("/fonts/Estedad-ExtraLight.ttf");
+  font-family: estedad-light;
+  src: url("/fonts/Estedad-ExtraLight.ttf");
+  font-display: swap;
 }
 @font-face {
-    font-family: estedad-bold;
-    src: url("/fonts/SemiBold.ttf");
+  font-family: estedad-bold;
+  src: url("/fonts/SemiBold.ttf");
+  font-display: swap;
 }
 @font-face {
-    font-family: estedad-extra-bold;
-    src: url("/fonts/Estedad-ExtraBold.ttf");
+  font-family: estedad-extra-bold;
+  src: url("/fonts/Estedad-ExtraBold.ttf");
+  font-display: swap;
 }
-.font-estedad{
-    font-family: estedad;
+.font-estedad {
+  font-family: estedad;
 }
-.font-estedad-light{
-    font-family: estedad-light;
+.font-estedad-light {
+  font-family: estedad-light;
 }
-.font-estedad-bold{
-    font-family: estedad-bold;
+.font-estedad-bold {
+  font-family: estedad-bold;
 }
-.font-estedad-extra-bold{
-    font-family: estedad-extra-bold;
+.font-estedad-extra-bold {
+  font-family: estedad-extra-bold;
 }

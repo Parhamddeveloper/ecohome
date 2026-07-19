@@ -5,7 +5,7 @@ import { MdOutlineChair } from "react-icons/md";
 import { TbBuilding } from "react-icons/tb";
 import { LuHammer } from "react-icons/lu";
 import { PiLeaf } from "react-icons/pi";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { projects } from "../../../../../data/db";
 
 export const categories = [
@@ -95,17 +95,19 @@ export default function ProjectsSect() {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          {filteredProjects.length > 0 ? (
-            filteredProjects.map((project) => (
-              <ProjectCard key={project.id} {...project} />
-            ))
-          ) : (
-            <div className="col-span-full text-center py-10">
-              <h2 className="text-2xl font-estedad dark:text-white">
-                پروژه‌ای در این دسته ‌بندی یافت نشد.
-              </h2>
-            </div>
-          )}
+          <AnimatePresence mode="wait">
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map((project) => (
+                <ProjectCard key={project.id} {...project} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-10">
+                <h2 className="text-2xl font-estedad dark:text-white">
+                  پروژه‌ای در این دسته ‌بندی یافت نشد.
+                </h2>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

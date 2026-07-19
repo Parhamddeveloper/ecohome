@@ -23,6 +23,7 @@ export default function ProjectCard({ thumbnail, title, text, type }) {
           src={thumbnail}
           alt={title}
           className="object-cover h-full w-full"
+          loading="lazy"
         />
       </div>
       <div className="h-28 py-2 px-4 flex flex-col justify-between gap-y-2">
