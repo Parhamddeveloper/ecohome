@@ -9,7 +9,7 @@ export const CategoryTitle = {
   interior: "طراحی داخلی",
   eco: "طراحی پایدار",
 };
-export default function ProjectCard({ thumbnail, title, text, type }) {
+export default function ProjectCard({id, thumbnail, title, text, type }) {
   return (
     <motion.div
       initial={{ x: 20, opacity: 0 }}
@@ -23,7 +23,8 @@ export default function ProjectCard({ thumbnail, title, text, type }) {
           src={thumbnail}
           alt={title}
           className="object-cover h-full w-full"
-          loading="lazy"
+          loading={id === 1 ? "eager" : "lazy"}
+          fetchPriority={id === 1 ? "high" : "auto"}
         />
       </div>
       <div className="h-28 py-2 px-4 flex flex-col justify-between gap-y-2">
