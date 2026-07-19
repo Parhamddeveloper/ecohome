@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { TeamCarousel } from "./TeamCarousel";
+import { Carousel } from "../../../../components/carousel/carousel";
+import TeamCarousel from "./TeamCarousel";
 export default function OurTeam() {
   return (
     <section className="pt-10 bg-[#fbf6f0] dark:bg-gray-800 overflow-hidden transition-colors duration-500">
@@ -19,7 +20,9 @@ export default function OurTeam() {
         viewport={{ once: true, amount: 0.7 }}
         className="max-w-7xl mx-auto"
       >
-        <TeamCarousel />
+        <Carousel>
+          <TeamCarousel/>
+        </Carousel>
       </motion.div>
     </section>
   );
