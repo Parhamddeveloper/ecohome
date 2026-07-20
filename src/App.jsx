@@ -6,6 +6,7 @@ import AboutUs from "./Pages/about-us/about-us";
 import FAQ from "./Pages/faq/faq";
 import Projects from "./Pages/projects/projects";
 import Layout from "./Layout";
+import Weblog from "./Pages/weblog/weblog";
 function App() {
   return (
     <>
@@ -17,6 +18,7 @@ function App() {
           <Route element={<AboutUs />} path="/about-us" />
           <Route element={<FAQ />} path="/faq" />
           <Route element={<Projects />} path="/projects" />
+          <Route element={<Weblog/>} path="/weblogs" />
           </Route>
         </Routes>
       </BrowserRouter>
