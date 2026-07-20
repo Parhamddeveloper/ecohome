@@ -6,19 +6,19 @@ import AboutUs from "./Pages/about-us/about-us";
 import FAQ from "./Pages/faq/faq";
 import Projects from "./Pages/projects/projects";
 import Layout from "./Layout";
-import Weblog from "./Pages/weblog/weblog";
+import Weblog from "./Pages/weblog/Weblog";
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={<Layout />} >
-          <Route index element={<HomePage />} />
-          <Route element={<ContactUs />} path="/contact-us" />
-          <Route element={<AboutUs />} path="/about-us" />
-          <Route element={<FAQ />} path="/faq" />
-          <Route element={<Projects />} path="/projects" />
-          <Route element={<Weblog/>} path="/weblogs" />
+          <Route element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route element={<ContactUs />} path="/contact-us" />
+            <Route element={<AboutUs />} path="/about-us" />
+            <Route element={<FAQ />} path="/faq" />
+            <Route element={<Projects />} path="/projects" />
+            <Route element={<Weblog />} path="/weblogs" />
           </Route>
         </Routes>
       </BrowserRouter>

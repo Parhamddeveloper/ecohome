@@ -14,7 +14,7 @@ export default function ProjectCard({id, thumbnail, title, text, type }) {
     <motion.div
       initial={{ x: 20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 1 }}
       className=" rounded-2xl overflow-hidden font-estedad shadow-2xl"
     >
       <div className="relative h-52">
