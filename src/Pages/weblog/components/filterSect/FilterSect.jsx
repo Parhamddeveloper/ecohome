@@ -49,7 +49,7 @@ export default function FilterSect({
         <div className="relative flex items-center mt-3 w-full">
           <BiSearch className="text-xl absolute right-4 rotate-90 opacity-50 dark:text-black/55" />
           <input
-            className="w-full rounded-lg bg-white focus:outline-0 border border-gray-400 p-2 ps-10 placeholder:text-black/45 placeholder:dark:text-white/45"
+            className="w-full rounded-lg bg-white focus:outline-0 border border-gray-400 p-2 ps-10 text-black placeholder:text-black/45 placeholder:dark:text-white/45"
             type="text"
             placeholder="جستجوی مقالات"
             value={searchTerm}
