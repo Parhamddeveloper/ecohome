@@ -255,3 +255,101 @@ export const projects = [
     type : "commercial"
   },
 ];
+
+export const weblogs = [
+  {
+    id: 1,
+    thumbnail: "/hero.webp",
+    title: "استودیو سبز",
+    text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
+    type : "commercial",
+    date: "May 10, 2024",
+  },
+  {
+    id: 2,
+    thumbnail: "/project1.jpg",
+    title: "استودیو سبز",
+    text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
+    type : "renovation",
+    date: "May 10, 2024",
+  },
+  {
+    id: 3,
+    thumbnail: "/project2.jpg",
+    title: "استودیو سبز",
+    text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
+    type : "commercial",
+    date: "May 10, 2024",
+  },
+  {
+    id: 4,
+    thumbnail: "/project3.jpg",
+    title: "استودیو سبز",
+    text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
+    type : "commercial",
+    date: "May 10, 2024",
+  },
+  {
+    id: 5,
+    thumbnail: "/project4.jpg",
+    title: "استودیو سبز",
+    text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
+    type : "commercial",
+    date: "May 10, 2024",
+  },
+    {
+    id: 6,
+    thumbnail: "/project5.jpg",
+    title: "استودیو سبز",
+    text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
+    type : "commercial",
+    date: "May 10, 2024",
+  },
+    {
+    id: 7,
+    thumbnail: "/project6.jpg",
+    title: "استودیو سبز",
+    text: "لورم ایپسوم یک متن محتوایی است که با استفاده از کلماتی بی معنی میتواند",
+    type : "commercial",
+    date: "May 10, 2024",
+  },
+];
+
+export const PopularTags = [
+  {
+    id:1,
+    tag_name : "استودیو"
+  },
+    {
+    id:2,
+    tag_name : "سازگار با محیط زیست"
+  },
+    {
+    id:3,
+    tag_name : "مینیمالیسم"
+  },
+    {
+    id:4,
+    tag_name : "استودیو"
+  },
+    {
+    id:5,
+    tag_name : "استودیو"
+  },
+    {
+    id:6,
+    tag_name : "استودیو"
+  },
+    {
+    id:7,
+    tag_name : "استودیو"
+  },
+    {
+    id:8,
+    tag_name : "استودیو"
+  },
+    {
+    id:9,
+    tag_name : "استودیو"
+  },
+]
