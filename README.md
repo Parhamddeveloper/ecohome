@@ -1,6 +1,6 @@
 # 🏡 EcoHome - Interior Design & Architecture Platform
 
-A modern, responsive, and high-performance web application for interior design and architectural projects built with **React**, **Tailwind CSS**, and **Framer Motion**.
+A modern, responsive, and high-performance website for interior design and architectural projects built with **React**, **Tailwind CSS**, and **Framer Motion**.
 
 ---
 
