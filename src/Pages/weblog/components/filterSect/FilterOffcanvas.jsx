@@ -1,39 +1,6 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-export const categories = [
-  {
-    id: "all",
-    title: "همه پروژه‌ها",
-    count: 3,
-  },
-  {
-    id: "residential",
-    title: "مسکونی",
-    count: 6,
-  },
-  {
-    id: "commercial",
-    title: "تجاری",
-    count: 5,
-  },
-  {
-    id: "renovation",
-    title: "بازسازی",
-    count: 12,
-  },
-  {
-    id: "interior",
-    title: "طراحی داخلی",
-    count: 11,
-  },
-  {
-    id: "eco",
-    title: "طراحی پایدار",
-    count: 21,
-  },
-];
-
-export default function FilterOffcanvas({ setIsOffCanvasOpen,setSelectedCategory,selectedCategory }) {
+export default function FilterOffcanvas({categories, setIsOffCanvasOpen,setSelectedCategory,selectedCategory }) {
   useEffect(() => {
     document.documentElement.classList.add("overflow-hidden");
 
@@ -70,7 +37,7 @@ export default function FilterOffcanvas({ setIsOffCanvasOpen,setSelectedCategory
         <h2 className="text-center text-xl">دسته بندی ها</h2>
         <div className="mt-6">
           {categories.map((Item) => (
-            <div className={`flex justify-between my-3 p-1 px-2 ${selectedCategory == Item.id && "rounded-lg bg-[#869074] text-white"}`} onClick={() => FilterHandler(Item.id)}>
+            <div key={Item.id} className={`flex justify-between my-3 p-1 px-2 ${selectedCategory == Item.id && "rounded-lg bg-[#869074] text-white"}`} onClick={() => FilterHandler(Item.id)}>
               <span>{Item.title}</span>
               <span className={`flex items-center justify-center  ${selectedCategory == Item.id ? "bg-green-200/15" : "bg-red-200 text-emerald-800"} py-0.5 px-2 rounded-full `}>
                 {Item.count}

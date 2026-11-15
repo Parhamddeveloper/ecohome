@@ -1,46 +1,15 @@
 import { BiSearch } from "react-icons/bi";
-import { PopularTags, weblogs } from "../../../../../data/db";
+import { PopularTags } from "../../../../../data/db";
 import RecentBlogsCart from "../recentBlogsCart/RecentBlogsCart";
-export const categories = [
-  {
-    id: "all",
-    title: "همه پروژه‌ها",
-    count: 3,
-  },
-  {
-    id: "residential",
-    title: "مسکونی",
-    count: 6,
-  },
-  {
-    id: "commercial",
-    title: "تجاری",
-    count: 5,
-  },
-  {
-    id: "renovation",
-    title: "بازسازی",
-    count: 12,
-  },
-  {
-    id: "interior",
-    title: "طراحی داخلی",
-    count: 11,
-  },
-  {
-    id: "eco",
-    title: "طراحی پایدار",
-    count: 21,
-  },
-];
-
 export default function FilterSect({
+  categories,
   searchTerm,
   setSearchTerm,
   selectedCategory,
   setSelectedCategory,
+  weblogs,
 }) {
-  const RecentPosts = [...weblogs].reverse().slice(0, 3);
+  const recentPosts = weblogs.slice(-3).reverse();
 
   return (
     <div className="flex flex-col gap-y-4 transition-colors duration-500">
@@ -51,6 +20,7 @@ export default function FilterSect({
           <input
             className="w-full rounded-lg bg-white focus:outline-0 border border-gray-400 p-2 ps-10 text-black placeholder:text-black/45 placeholder:dark:text-white/45"
             type="text"
+            aria-describedby="weblog-search-limit"
             placeholder="جستجوی مقالات"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -61,6 +31,7 @@ export default function FilterSect({
         <h2>دسته بندی ها</h2>
         {categories.map((Item) => (
           <button
+            key={Item.id}
             className={`flex justify-between w-full my-3 p-1 px-2 cursor-pointer ${selectedCategory == Item.id && "rounded-lg bg-[#869074] text-white"}`}
             onClick={() => setSelectedCategory(Item.id)}
           >
@@ -76,7 +47,7 @@ export default function FilterSect({
       <div className="bg-gray-300/35 rounded-xl p-3 font-estedad">
         <h2>پست های اخیر</h2>
         <div className="flex flex-col gap-y-3 mt-3">
-          {RecentPosts.map((Item) => (
+          {recentPosts.map((Item) => (
             <RecentBlogsCart key={Item.id} {...Item} />
           ))}
         </div>

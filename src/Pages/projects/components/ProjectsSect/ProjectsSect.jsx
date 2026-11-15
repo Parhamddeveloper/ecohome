@@ -1,12 +1,11 @@
 import ProjectCard from "../ProjectCard/ProjectCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiOutlineSquares2X2, HiOutlineHome } from "react-icons/hi2";
 import { MdOutlineChair } from "react-icons/md";
 import { TbBuilding } from "react-icons/tb";
 import { LuHammer } from "react-icons/lu";
 import { PiLeaf } from "react-icons/pi";
 import { AnimatePresence, motion } from "framer-motion";
-import { projects } from "../../../../../data/db";
 
 export const categories = [
   {
@@ -43,10 +42,30 @@ export const categories = [
 
 export default function ProjectsSect() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [catalog, setCatalog] = useState({ status: "loading", projects: [] });
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadProjects() {
+      try {
+        const response = await fetch("/api/projects", { signal: controller.signal });
+        if (!response.ok) throw new Error("Could not load projects");
+        const projects = await response.json();
+        if (!controller.signal.aborted) setCatalog({ status: "ready", projects });
+      } catch {
+        if (!controller.signal.aborted) setCatalog({ status: "error", projects: [] });
+      }
+    }
+
+    loadProjects();
+    return () => controller.abort();
+  }, []);
+
   const filteredProjects =
     selectedCategory === "all"
-      ? projects
-      : projects.filter((project) => project.type === selectedCategory);
+      ? catalog.projects
+      : catalog.projects.filter((project) => project.type === selectedCategory);
   return (
     <section className=" transition-colors duration-500">
       <div className="max-w-7xl mx-auto py-8 px-3 xl:px-0">
@@ -96,7 +115,15 @@ export default function ProjectsSect() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
           <AnimatePresence mode="wait">
-            {filteredProjects.length > 0 ? (
+            {catalog.status === "loading" ? (
+              <p role="status" className="col-span-full text-center py-10 dark:text-white">
+                در حال بارگذاری پروژه‌ها…
+              </p>
+            ) : catalog.status === "error" ? (
+              <p role="alert" className="col-span-full text-center py-10 dark:text-white">
+                بارگذاری پروژه‌ها انجام نشد. لطفاً صفحه را دوباره باز کنید.
+              </p>
+            ) : filteredProjects.length > 0 ? (
               filteredProjects.map((project) => (
                 <ProjectCard key={project.id} {...project} />
               ))

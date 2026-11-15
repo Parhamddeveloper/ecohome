@@ -4,40 +4,13 @@ import { LuSlidersHorizontal } from "react-icons/lu";
 import { AnimatePresence, motion } from "framer-motion";
 import FilterOffcanvas from "./FilterOffcanvas";
 
-export const categories = [
-  {
-    id: "all",
-    title: "همه پروژه‌ها",
-  },
-  {
-    id: "residential",
-    title: "مسکونی",
-  },
-  {
-    id: "commercial",
-    title: "تجاری",
-  },
-  {
-    id: "renovation",
-    title: "بازسازی",
-  },
-  {
-    id: "interior",
-    title: "طراحی داخلی",
-  },
-  {
-    id: "eco",
-    title: "طراحی پایدار",
-  },
-];
-
-export default function MobileFilterSect({selectedCategory,setSelectedCategory,searchTerm,setSearchTerm}) {
+export default function MobileFilterSect({categories,selectedCategory,setSelectedCategory,searchTerm,setSearchTerm}) {
   const [isOffcanvasOpen, setIsOffCanvasOpen] = useState(false);
   return (
     <>
       <AnimatePresence>
         {isOffcanvasOpen && (
-          <FilterOffcanvas setIsOffCanvasOpen={setIsOffCanvasOpen} setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} />
+          <FilterOffcanvas categories={categories} setIsOffCanvasOpen={setIsOffCanvasOpen} setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} />
         )}
       </AnimatePresence>
       <div className="flex flex-col mt-4 px-3 gap-x-3 font-estedad lg:hidden">
@@ -54,6 +27,7 @@ export default function MobileFilterSect({selectedCategory,setSelectedCategory,s
             <input
               className="w-full rounded-lg focus:outline-0 border p-2 ps-10 placeholder:dark:text-white/45"
               type="text"
+              aria-describedby="weblog-search-limit"
               placeholder="جستجوی مقالات"
               value={searchTerm}
               onChange={(e)=> setSearchTerm(e.target.value)}

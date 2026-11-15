@@ -1,0 +1,8 @@
+import { MongoClient } from "mongodb";
+
+const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
+const databaseName = process.env.MONGODB_DATABASE || "ecohome";
+
+export const mongoClient = new MongoClient(uri, { serverSelectionTimeoutMS: 5000 });
+export const projectsCollection = mongoClient.db(databaseName).collection("projects");
+export const weblogsCollection = mongoClient.db(databaseName).collection("weblogs");
