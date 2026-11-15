@@ -84,5 +84,13 @@ npm run preview
 
 **http://localhost:4173**
 
+## Lint
+
+Run Oxlint to check the source code.
+
+~~~bash
+npm run lint
+~~~
+
 ## Credits
 This app made and designed by [Parham Daneshnejad](https://github.com/parhamddeveloper/) with love❤️❤️
