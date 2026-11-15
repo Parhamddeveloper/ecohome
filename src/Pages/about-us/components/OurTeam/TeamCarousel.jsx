@@ -1,9 +1,7 @@
-import { teamMembers } from "../../../../../data/db";
-
-export default function TeamCarousel() {
+export default function TeamCarousel({ members }) {
   return (
     <>
-      {teamMembers.map((item) => (
+      {members.map((item) => (
         <div
           key={item.id}
           className="flex-[0_0_100%] min-w-0 pr-4 sm:flex-[0_0_50%] md:flex-[0_0_33.33%]  lg:flex-[0_0_25%] xl:flex-[0_0_20%]"

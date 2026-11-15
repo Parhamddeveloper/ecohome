@@ -1,17 +1,20 @@
 import express from "express";
+import faqsApi from "../api/faqs.js";
 import projectsApi from "../api/projects.js";
+import teamMembersApi from "../api/team-members.js";
 import weblogsApi from "../api/weblogs.js";
 import { mongoClient } from "./database.js";
 
 const app = express();
 app.disable("x-powered-by");
-app.use(projectsApi, weblogsApi);
+app.use(projectsApi, weblogsApi, teamMembersApi, faqsApi);
 
 const port = Number(process.env.API_PORT || 3001);
 
 try {
   await mongoClient.connect();
-  const server = app.listen(port, "127.0.0.1", () => {
+  const server = app.listen(port, "127.0.0.1");
+  server.on("listening", () => {
     console.log(`EcoHome API listening on http://127.0.0.1:${port}`);
   });
 
