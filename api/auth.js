@@ -1,7 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import express from "express";
 import { sessionsCollection as sessions, usersCollection as users } from "../server/database.js";
-import { hashPassword, verifyPassword } from "../server/passwords.js";
+import { hashPassword, needsPasswordUpgrade, verifyPassword } from "../server/passwords.js";
 
 const app = express();
 app.disable("x-powered-by");
@@ -62,6 +62,13 @@ async function authenticate(req, res) {
     const user = await users.findOne({ _id: address });
     if (!await verifyPassword(password, user?.credentials)) {
       return res.status(401).json({ error: "ایمیل یا رمز عبور اشتباه است." });
+    }
+    if (needsPasswordUpgrade(user.credentials)) {
+      const credentials = await hashPassword(password);
+      await users.updateOne(
+        { _id: user._id, "credentials.hash": user.credentials.hash },
+        { $set: { credentials } },
+      );
     }
     return establishSession(req, res, user, 200);
   }
