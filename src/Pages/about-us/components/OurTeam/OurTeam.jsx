@@ -1,10 +1,17 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { SessionContext } from "../../../../context/SessionContext";
 import { Carousel } from "../../../../components/carousel/carousel";
 import TeamCarousel from "./TeamCarousel";
+import TeamMemberEditor from "./TeamMemberEditor";
+import TeamMemberOrder from "./TeamMemberOrder";
 export default function OurTeam() {
   const [team, setTeam] = useState({ status: "loading", members: [] });
   const { status, members } = team;
+  const { user } = useContext(SessionContext);
+  const [editingId, setEditingId] = useState(null);
+  const [message, setMessage] = useState("");
+  const editingMember = members.find((member) => member.id === editingId);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -23,6 +30,20 @@ export default function OurTeam() {
     loadTeam();
     return () => controller.abort();
   }, []);
+
+  function saveMember(updated) {
+    setTeam((current) => ({
+      ...current,
+      members: current.members.map((member) => member.id === updated.id ? updated : member),
+    }));
+    setEditingId(null);
+    setMessage("تغییرات عضو ذخیره شد.");
+  }
+
+  function saveOrder(orderedMembers) {
+    setTeam((current) => ({ ...current, members: orderedMembers }));
+    setMessage("ترتیب اعضا ذخیره شد.");
+  }
 
   return (
     <section className="pt-10 bg-[#fbf6f0] dark:bg-gray-800 overflow-hidden transition-colors duration-500">
@@ -58,6 +79,20 @@ export default function OurTeam() {
           </Carousel>
         )}
       </motion.div>
+      {user?.role === "superadmin" && status === "ready" && members.length > 0 && (
+        <div className="mx-auto grid max-w-3xl gap-3 px-4 pb-8 font-estedad dark:text-white">
+          <h3 className="text-xl font-estedad-bold">مدیریت اعضای تیم</h3>
+          {message && <p role="status">{message}</p>}
+          {editingMember ? (
+            <TeamMemberEditor member={editingMember} onSave={saveMember} onCancel={() => setEditingId(null)} />
+          ) : (
+            <TeamMemberOrder members={members} onSave={saveOrder} onEdit={(id) => {
+              setMessage("");
+              setEditingId(id);
+            }} />
+          )}
+        </div>
+      )}
     </section>
   );
 }

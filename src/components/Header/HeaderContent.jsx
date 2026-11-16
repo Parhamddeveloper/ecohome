@@ -5,8 +5,10 @@ import { FaMoon, FaSun } from "react-icons/fa6";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeContext } from "../../context/ThemeContext";
 import { useContext } from "react";
+import { SessionContext } from "../../context/SessionContext";
 import BtnToggleTheme from "./BtnToggleTheme";
 export default function HeaderContent({offCanvasHandler}) {
+  const { user } = useContext(SessionContext);
 
   return (
     <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between md:justify-normal items-center font-estedad">
@@ -76,7 +78,7 @@ export default function HeaderContent({offCanvasHandler}) {
       <div className="hidden md:flex items-center gap-x-3">
             <BtnToggleTheme/>
         <NavLink to="/account" className="grid h-10 w-40 place-items-center rounded-lg bg-[#869074] text-white">
-          ورود / ثبت نام
+          <span className="max-w-full truncate px-2">{user?.name ?? "ورود / ثبت نام"}</span>
         </NavLink>
       </div>
     </div>

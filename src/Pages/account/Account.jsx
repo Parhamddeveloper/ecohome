@@ -1,29 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import { SessionContext } from "../../context/SessionContext";
 
 export default function Account() {
-  const [user, setUser] = useState(null);
+  const { user, setUser, loading, sessionError } = useContext(SessionContext);
   const [mode, setMode] = useState("login");
-  const [pending, setPending] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const controller = new AbortController();
-    async function loadSession() {
-      try {
-        const response = await fetch("/api/auth", { signal: controller.signal });
-        if (!response.ok) throw new Error();
-        const { user } = await response.json();
-        if (!controller.signal.aborted) setUser(user);
-      } catch {
-        if (!controller.signal.aborted) setError("بررسی وضعیت ورود انجام نشد.");
-      } finally {
-        if (!controller.signal.aborted) setPending(false);
-      }
-    }
-
-    loadSession();
-    return () => controller.abort();
-  }, []);
+  const [submitting, setPending] = useState(false);
+  const [error, setError] = useState(null);
+  const pending = loading || submitting;
+  const message = error ?? sessionError;
 
   async function submit(event) {
     event.preventDefault();
@@ -77,6 +62,9 @@ export default function Account() {
         <div className="flex flex-col gap-4">
           <p>{user.name}</p>
           <p dir="ltr" className="text-right">{user.email}</p>
+          <Link to="/edit-profile" className="rounded-lg bg-[#596348] p-2 text-center text-white">
+            ویرایش اطلاعات
+          </Link>
           <button type="button" disabled={pending} onClick={logout} className="rounded-lg border p-2">
             خروج از حساب
           </button>
@@ -108,7 +96,7 @@ export default function Account() {
           </button>
         </form>
       )}
-      {error && <p role="alert" className="mt-4 text-red-700 dark:text-red-300">{error}</p>}
+      {message && <p role="alert" className="mt-4 text-red-700 dark:text-red-300">{message}</p>}
     </section>
   );
 }

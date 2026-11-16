@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { useContext, useEffect } from "react";
+import { SessionContext } from "../../context/SessionContext";
 import { IoMdClose } from "react-icons/io";
 import { ThemeContext } from "../../context/ThemeContext";
 import BtnToggleTheme from "./BtnToggleTheme";
 import { NavLink } from "react-router-dom";
 
 export default function OffCanvas({ offCanvasHandler }) {
+  const { user } = useContext(SessionContext);
     useEffect(()=>{
         document.documentElement.classList.add("overflow-hidden")
         
@@ -97,7 +99,7 @@ export default function OffCanvas({ offCanvasHandler }) {
         </nav>
         <div className="mx-auto w-full flex justify-center mt-auto mb-5">
           <NavLink to="/account" onClick={offCanvasHandler} className="grid h-10 w-3/4 place-items-center rounded-lg bg-[#869074] text-white">
-            ورود / ثبت نام
+            <span className="max-w-full truncate px-2">{user?.name ?? "ورود / ثبت نام"}</span>
           </NavLink>
         </div>
       </motion.aside>

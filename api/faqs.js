@@ -1,42 +1,35 @@
-import { createHash, timingSafeEqual } from "node:crypto";
 import express from "express";
+import { ObjectId } from "mongodb";
 import { faqsCollection } from "../server/database.js";
+import { requireRole } from "../server/roles.js";
 
 const app = express();
 app.disable("x-powered-by");
 
 const projection = { _id: 0, id: 1, question: 1, answer: 1 };
+const activeFaq = { deletedAt: { $exists: false } };
 
 async function listFaqs(_req, res) {
-  const faqs = await faqsCollection.find({}, { projection }).sort({ id: 1 }).toArray();
+  const faqs = await faqsCollection.find(activeFaq, { projection }).sort({ id: 1 }).toArray();
   res.json(faqs);
 }
 
-function digest(value) {
-  return createHash("sha256").update(value).digest();
-}
+const requireFaqEditor = requireRole("admin", "superadmin");
 
-function requireFaqEditor(req, res, next) {
-  const token = process.env.FAQ_ADMIN_TOKEN;
-  if (!token || token.length < 32) {
-    return res.status(503).json({ error: "FAQ editing is unavailable" });
+function requireFaqId(req, res, next) {
+  const idParam = new URL(req.originalUrl, "http://localhost").searchParams.get("id");
+  const id = Number(idParam);
+  if (/^[a-f0-9]{24}$/.test(idParam ?? "")) {
+    res.locals.faqId = idParam;
+  } else if (/^[1-9][0-9]*$/.test(idParam ?? "") && Number.isSafeInteger(id)) {
+    res.locals.faqId = id;
+  } else {
+    return res.status(400).json({ error: "A valid FAQ id is required" });
   }
-
-  const authorization = req.get("Authorization") ?? "";
-  if (!timingSafeEqual(digest(authorization), digest(`Bearer ${token}`))) {
-    return res.set("WWW-Authenticate", "Bearer").status(401).json({ error: "Unauthorized" });
-  }
-
   next();
 }
 
-async function updateFaq(req, res) {
-  const idParam = new URL(req.originalUrl, "http://localhost").searchParams.get("id");
-  const id = Number(idParam);
-  if (!/^[1-9][0-9]*$/.test(idParam ?? "") || !Number.isSafeInteger(id)) {
-    return res.status(400).json({ error: "A valid FAQ id is required" });
-  }
-
+function validateFaqFields(req, res, next) {
   if (!req.is("application/json")) {
     return res.status(415).json({ error: "Content-Type must be application/json" });
   }
@@ -44,7 +37,7 @@ async function updateFaq(req, res) {
   const body = req.body;
   const fields = { question: 300, answer: 5000 };
   if (!body || Array.isArray(body) || Object.keys(body).length === 0) {
-    return res.status(400).json({ error: "Provide a question or answer to update" });
+    return res.status(400).json({ error: "Provide a question or answer" });
   }
 
   const changes = {};
@@ -58,24 +51,52 @@ async function updateFaq(req, res) {
     }
     changes[field] = text;
   }
+  res.locals.faqFields = changes;
+  next();
+}
 
+async function createFaq(_req, res) {
+  const { question, answer } = res.locals.faqFields;
+  if (!question || !answer) {
+    return res.status(400).json({ error: "Question and answer are required" });
+  }
+  const id = new ObjectId().toHexString();
+  const faq = { id, question, answer };
+  await faqsCollection.insertOne({ _id: id, ...faq });
+  res.status(201).json(faq);
+}
+
+async function updateFaq(_req, res) {
   const faq = await faqsCollection.findOneAndUpdate(
-    { _id: id },
-    { $set: changes },
+    { _id: res.locals.faqId, ...activeFaq },
+    { $set: res.locals.faqFields },
     { projection, returnDocument: "after" },
   );
   if (!faq) return res.status(404).json({ error: "FAQ not found" });
   res.json(faq);
 }
 
-function methodNotAllowed(_req, res) {
-  res.set("Allow", "GET, PATCH").status(405).json({ error: "Method not allowed" });
+async function deleteFaq(_req, res) {
+  const result = await faqsCollection.updateOne(
+    { _id: res.locals.faqId, ...activeFaq },
+    { $set: { deletedAt: new Date() } },
+  );
+  if (!result.matchedCount) return res.status(404).json({ error: "FAQ not found" });
+  res.status(204).end();
 }
+
+function methodNotAllowed(_req, res) {
+  res.set("Allow", "GET, POST, PATCH, DELETE").status(405).json({ error: "Method not allowed" });
+}
+
+const readJson = express.json({ limit: "32kb" });
 
 app.route("/api/faqs")
   .head(methodNotAllowed)
   .get(listFaqs)
-  .patch(requireFaqEditor, express.json({ limit: "32kb" }), updateFaq)
+  .post(requireFaqEditor, readJson, validateFaqFields, createFaq)
+  .patch(requireFaqEditor, requireFaqId, readJson, validateFaqFields, updateFaq)
+  .delete(requireFaqEditor, requireFaqId, deleteFaq)
   .all(methodNotAllowed);
 
 app.use((error, _req, res, _next) => {
