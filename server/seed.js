@@ -6,6 +6,7 @@ import {
   faqsCollection,
   mongoClient,
   projectsCollection,
+  sessionsCollection,
   teamMembersCollection,
   weblogsCollection,
 } from "./database.js";
@@ -28,6 +29,7 @@ try {
   await seedCollection(weblogsCollection, weblogs);
   await seedCollection(teamMembersCollection, teamMembers);
   await seedCollection(faqsCollection, faqs);
+  await sessionsCollection.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 } finally {
   await mongoClient.close();
 }

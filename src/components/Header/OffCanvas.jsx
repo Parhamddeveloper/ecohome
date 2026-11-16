@@ -96,9 +96,9 @@ export default function OffCanvas({ offCanvasHandler }) {
           </ul>
         </nav>
         <div className="mx-auto w-full flex justify-center mt-auto mb-5">
-          <button className="bg-[#869074] text-white w-3/4 h-10 rounded-lg ">
+          <NavLink to="/account" onClick={offCanvasHandler} className="grid h-10 w-3/4 place-items-center rounded-lg bg-[#869074] text-white">
             ورود / ثبت نام
-          </button>
+          </NavLink>
         </div>
       </motion.aside>
     </div>

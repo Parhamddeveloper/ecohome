@@ -75,9 +75,9 @@ export default function HeaderContent({offCanvasHandler}) {
       </nav>
       <div className="hidden md:flex items-center gap-x-3">
             <BtnToggleTheme/>
-        <button className="bg-[#869074] text-white w-40 h-10 rounded-lg">
+        <NavLink to="/account" className="grid h-10 w-40 place-items-center rounded-lg bg-[#869074] text-white">
           ورود / ثبت نام
-        </button>
+        </NavLink>
       </div>
     </div>
   );
