@@ -3,7 +3,7 @@ import { cookieName, findAccountSession, findSessionUser, hashToken, sessionId }
 import express from "express";
 import { ObjectId } from "mongodb";
 import { ensureUserEmails } from "../server/user-emails.js";
-import { releaseLoginAttempt, reserveLoginAttempt } from "../server/login-attempts.js";
+import { releaseLoginAttempt, reserveAuthRequest, reserveLoginAttempt } from "../server/login-attempts.js";
 import {
   sessionsCollection as sessions,
   usersCollection as users,
@@ -51,7 +51,8 @@ function invalidName(res) {
 
 function parseEmail(value) {
   const email = typeof value === "string" ? value.trim().toLowerCase() : "";
-  return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : null;
+  return email.length <= 254 && /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(email)
+    ? email : null;
 }
 
 function validPassword(value) {
@@ -70,14 +71,15 @@ async function updateProfile(req, res) {
   const name = parseDisplayName(body.name);
   if (!name) return invalidName(res);
 
-  const email = parseEmail(Object.hasOwn(body, "email") ? body.email : publicUser(user).email);
-  if (!email) return res.status(400).json({ error: "ایمیل معتبر نیست." });
+  if (Object.hasOwn(body, "email") && parseEmail(body.email) !== publicUser(user).email) {
+    return res.status(400).json({ error: "تغییر ایمیل فعلاً در دسترس نیست." });
+  }
 
   const { currentPassword = "", newPassword = "", confirmPassword = "" } = body;
+  const changingPassword = newPassword !== "" || confirmPassword !== "";
   const changes = { name };
-  if (Object.hasOwn(body, "email")) changes.email = email;
   const filter = { _id: user._id };
-  if (newPassword !== "" || confirmPassword !== "") {
+  if (changingPassword) {
     if (!validPassword(newPassword) || newPassword !== confirmPassword) {
       return res.status(400).json({ error: "رمز جدید باید ۸ تا ۱۲۸ کاراکتر باشد و با تکرار آن مطابقت داشته باشد." });
     }
@@ -95,22 +97,16 @@ async function updateProfile(req, res) {
       return res.status(403).json({ error: "رمز عبور فعلی اشتباه است." });
     }
     await releaseLoginAttempt(attempt.id);
-    changes.credentials = await hashPassword(newPassword);
     filter["credentials.hash"] = user.credentials.hash;
   }
 
-  await ensureUserEmails();
-  let updated;
-  try {
-    const update = { $set: changes };
-    if (changes.credentials) update.$inc = { sessionVersion: 1 };
-    updated = await users.findOneAndUpdate(filter, update, { returnDocument: "after" });
-  } catch (error) {
-    if (error.code === 11000) return res.status(409).json({ error: "این ایمیل قبلاً ثبت شده است." });
-    throw error;
-  }
+  if (changingPassword) changes.credentials = await hashPassword(newPassword);
+
+  const update = { $set: changes };
+  if (changingPassword) update.$inc = { sessionVersion: 1 };
+  const updated = await users.findOneAndUpdate(filter, update, { returnDocument: "after" });
   if (!updated) return res.status(409).json({ error: "اطلاعات حساب تغییر کرده است. دوباره تلاش کن." });
-  if (changes.credentials) return establishSession(req, res, updated, 200);
+  if (changingPassword) return establishSession(req, res, updated, 200);
   res.json({ user: publicUser(updated) });
 }
 
@@ -131,6 +127,12 @@ async function establishSession(req, res, user, status) {
 
 async function authenticate(req, res) {
   const { action, email, password, name } = req.body ?? {};
+  const limit = await reserveAuthRequest(req, action);
+  if (!limit.allowed) {
+    return res.set("Retry-After", String(limit.retryAfter)).status(429).json({
+      error: "تعداد درخواست‌های ورود یا ثبت‌نام از این اتصال زیاد است. کمی بعد دوباره تلاش کن.",
+    });
+  }
   const address = parseEmail(email);
   if (!["register", "login"].includes(action) || !address || !validPassword(password)) {
     return res.status(400).json({ error: "ایمیل یا رمز عبور معتبر نیست." });

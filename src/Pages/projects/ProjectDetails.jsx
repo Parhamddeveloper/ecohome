@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { HiArrowRight } from "react-icons/hi";
 import { CategoryTitle } from "./components/ProjectCard/ProjectCard";
 
@@ -33,7 +33,7 @@ function ProjectGallery({ project }) {
   );
 }
 
-function ProjectContent({ id, article }) {
+function ProjectContent({ id, article, preview }) {
   const [result, setResult] = useState({ status: "loading" });
   const resource = article ? "weblogs" : "projects";
   const label = article ? "مقاله" : "پروژه";
@@ -45,7 +45,11 @@ function ProjectContent({ id, article }) {
     async function loadProject() {
       try {
         const query = new URLSearchParams({ id });
-        const response = await fetch(`/api/${resource}?${query}`, { signal: controller.signal });
+        const response = await fetch(`/api/${preview ? "admin-" : ""}${resource}?${query}`, { signal: controller.signal });
+        if (response.status === 401 || response.status === 403) {
+          if (!controller.signal.aborted) setResult({ status: "forbidden" });
+          return;
+        }
         if (response.status === 404 || response.status === 400) {
           if (!controller.signal.aborted) setResult({ status: "missing" });
           return;
@@ -60,7 +64,7 @@ function ProjectContent({ id, article }) {
 
     loadProject();
     return () => controller.abort();
-  }, [id, resource]);
+  }, [id, resource, preview]);
 
   const { status, project } = result;
   const details = project ? [
@@ -74,14 +78,19 @@ function ProjectContent({ id, article }) {
 
   return (
     <section dir="rtl" className="mx-auto grid max-w-7xl gap-6 px-4 py-10 font-estedad dark:text-white sm:px-6">
-      <Link to={`/${resource}`} className="inline-flex w-fit items-center gap-2 rounded-lg border border-current px-3 py-2 text-sm">
-        <HiArrowRight aria-hidden="true" /> بازگشت به {article ? "مقاله‌ها" : "پروژه‌ها"}
+      <Link to={preview ? `/dashboard?section=${resource}` : `/${resource}`}
+        className="inline-flex w-fit items-center gap-2 rounded-lg border border-current px-3 py-2 text-sm">
+        <HiArrowRight aria-hidden="true" /> بازگشت به {preview ? "داشبورد" : article ? "مقاله‌ها" : "پروژه‌ها"}
       </Link>
       {status === "loading" && <p role="status">در حال بارگذاری {label}…</p>}
       {status === "missing" && <h1 className="text-2xl font-estedad-bold">{label} پیدا نشد.</h1>}
+      {status === "forbidden" && <p role="alert">پیش‌نمایش فقط برای مدیران قابل مشاهده است.</p>}
       {status === "error" && <p role="alert">بارگذاری {label} انجام نشد. لطفاً صفحه را تازه‌سازی کن.</p>}
       {project && (
         <article className="grid gap-6">
+          {preview && <p className="w-fit rounded-full bg-[#869074]/25 px-3 py-1 text-sm">
+            پیش‌نمایش {project.status === "draft" ? "پیش‌نویس" : "محتوای منتشرشده"}
+          </p>}
           <h1 className="text-3xl font-estedad-bold sm:text-5xl">{project.title}</h1>
           <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_15rem]">
             <div className="order-2 grid min-w-0 gap-6 lg:order-1">
@@ -111,5 +120,7 @@ function ProjectContent({ id, article }) {
 
 export default function ProjectDetails({ article = false }) {
   const { id } = useParams();
-  return <ProjectContent key={`${article}:${id}`} id={id} article={article} />;
+  const [params] = useSearchParams();
+  const preview = params.get("preview") === "1";
+  return <ProjectContent key={`${article}:${id}:${preview}`} id={id} article={article} preview={preview} />;
 }

@@ -21,7 +21,7 @@ function validImage(value) {
 
 function validateProject(req, res, next) {
   const body = req.body;
-  const fields = [...Object.keys(textLimits), "type", "thumbnail", "gallery"];
+  const fields = [...Object.keys(textLimits), "type", "thumbnail", "gallery", "status"];
   if (!body || Array.isArray(body) || Object.keys(body).some((field) => !fields.includes(field))) {
     return res.status(400).json({ error: "اطلاعات پروژه معتبر نیست." });
   }
@@ -33,17 +33,23 @@ function validateProject(req, res, next) {
     }
     project[field] = value.trim();
   }
-  if (!project.title || !project.text || typeof body.type !== "string" ||
-      !Object.hasOwn(projectTypes, body.type)) {
+  const { status, type = "", thumbnail = "", gallery = [] } = body;
+  if (!["draft", "published"].includes(status)) {
+    return res.status(400).json({ error: "وضعیت انتشار معتبر نیست." });
+  }
+  const publishing = status === "published";
+  if (!project.title || (publishing && (!project.text || !type)) ||
+      (type !== "" && (typeof type !== "string" || !Object.hasOwn(projectTypes, type)))) {
     return res.status(400).json({ error: "عنوان، خلاصه و دسته‌بندی را وارد کن." });
   }
-  if (!validImage(body.thumbnail) || !Array.isArray(body.gallery) ||
-      body.gallery.length > 12 || !body.gallery.every(validImage)) {
+  if (((publishing || thumbnail !== "") && !validImage(thumbnail)) || !Array.isArray(gallery) ||
+      gallery.length > 12 || !gallery.every(validImage)) {
     return res.status(400).json({ error: "مسیر عکس اصلی و حداکثر ۱۲ عکس گالری باید معتبر باشد." });
   }
   res.locals.project = {
-    ...project, type: body.type, thumbnail: body.thumbnail, gallery: [...new Set(body.gallery)],
+    ...project, status, type, thumbnail, gallery: [...new Set(gallery)],
   };
+  if (publishing && !project.date) res.locals.project.date = new Date().toISOString().slice(0, 10);
   next();
 }
 
@@ -51,12 +57,25 @@ const readJson = express.json({ limit: "96kb" });
 function contentApi(path, collection) {
   const app = express();
   app.disable("x-powered-by");
-  app.use(path, requireRole("admin", "superadmin"));
+  app.use(path, (_req, res, next) => {
+    res.set("Cache-Control", "no-store");
+    next();
+  }, requireRole("admin", "superadmin"));
   app.route(path)
+    .get(async (req, res) => {
+      const params = new URL(req.originalUrl, "http://localhost").searchParams;
+      if (!params.has("id")) {
+        return res.json(await collection.find({}, { projection }).sort({ id: 1 }).toArray());
+      }
+      const id = parseProjectId(params.get("id"));
+      if (id === null) return res.status(400).json({ error: "شناسه معتبر نیست." });
+      const item = await collection.findOne({ id }, { projection });
+      if (!item) return res.status(404).json({ error: "محتوا پیدا نشد." });
+      res.json(item);
+    })
     .post(readJson, validateProject, async (_req, res) => {
       const id = new ObjectId().toHexString();
       const item = { ...res.locals.project, id };
-      item.date ||= new Date().toISOString().slice(0, 10);
       await collection.insertOne({ _id: id, ...item });
       res.status(201).json(item);
     })

@@ -2,6 +2,7 @@ import express from "express";
 import { WEBLOG_SEARCH_LIMIT } from "../data/weblog-search.js";
 import { weblogsCollection } from "../server/database.js";
 import { parseProjectId } from "../server/project-id.js";
+import { publicContent } from "../server/content-status.js";
 
 const app = express();
 app.disable("x-powered-by");
@@ -11,7 +12,7 @@ async function listWeblogs(req, res) {
   if (params.has("id")) {
     const id = parseProjectId(params.get("id"));
     if (id === null) return res.status(400).json({ error: "Invalid article id" });
-    const article = await weblogsCollection.findOne({ id }, { projection: { _id: 0 } });
+    const article = await weblogsCollection.findOne({ id, ...publicContent }, { projection: { _id: 0 } });
     if (!article) return res.status(404).json({ error: "Article not found" });
     return res.json(article);
   }
@@ -24,7 +25,8 @@ async function listWeblogs(req, res) {
   }
 
   const search = query.trim();
-  const filter = type && type !== "all" ? { type } : {};
+  const filter = { ...publicContent };
+  if (type && type !== "all") filter.type = type;
   if (search) {
     const literalSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const match = { $regex: literalSearch, $options: "i" };

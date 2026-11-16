@@ -9,13 +9,13 @@ export default function EditProfile() {
   const [newPassword, setNewPassword] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState("");
 
   async function submit(event) {
     event.preventDefault();
     const form = event.currentTarget;
     const fields = Object.fromEntries(new FormData(form));
-    setSaved(false);
+    setSaved("");
     if (fields.newPassword !== fields.confirmPassword) {
       setError("رمز جدید و تکرار آن یکسان نیستند.");
       return;
@@ -37,7 +37,7 @@ export default function EditProfile() {
       form.reset();
       setNewPassword("");
       setUser(result.user);
-      setSaved(true);
+      setSaved("اطلاعات حساب ذخیره شد.");
     } catch {
       setError("ذخیرهٔ اطلاعات حساب انجام نشد.");
     } finally {
@@ -53,7 +53,7 @@ export default function EditProfile() {
     <section className="mx-auto max-w-md px-4 py-12 font-estedad dark:text-white" dir="rtl">
       <h1 className="mb-6 text-2xl font-estedad-bold">ویرایش اطلاعات</h1>
       <form key={JSON.stringify([user.name, user.email])} onSubmit={submit}
-        onChange={() => setSaved(false)} className="grid gap-4">
+        onChange={() => setSaved("")} className="grid gap-4">
         <label className="grid gap-1">
           نام نمایشی
           <input name="name" defaultValue={user.name} autoComplete="name" minLength={3}
@@ -61,8 +61,7 @@ export default function EditProfile() {
         </label>
         <label className="grid gap-1">
           ایمیل
-          <input name="email" defaultValue={user.email} type="email" autoComplete="email"
-            maxLength={254} required disabled={pending} dir="ltr" className={inputClass} />
+          <input value={user.email} type="email" readOnly dir="ltr" className={`${inputClass} opacity-75`} />
         </label>
         <fieldset className="grid gap-3 rounded-lg border border-gray-400 p-4" disabled={pending}>
           <legend className="px-2">تغییر رمز عبور</legend>
@@ -85,7 +84,7 @@ export default function EditProfile() {
           </label>
         </fieldset>
         {error && <p role="alert" className="text-red-700 dark:text-red-300">{error}</p>}
-        {saved && <p role="status">اطلاعات حساب ذخیره شد.</p>}
+        {saved && <p role="status">{saved}</p>}
         <button disabled={pending} className="rounded-lg bg-[#596348] p-2 text-white disabled:opacity-60">
           {pending ? "در حال ذخیره…" : "ذخیرهٔ تغییرات"}
         </button>
