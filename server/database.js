@@ -10,3 +10,4 @@ export const teamMembersCollection = mongoClient.db(databaseName).collection("te
 export const faqsCollection = mongoClient.db(databaseName).collection("faqs");
 export const usersCollection = mongoClient.db(databaseName).collection("users");
 export const sessionsCollection = mongoClient.db(databaseName).collection("sessions");
+export const loginAttemptsCollection = mongoClient.db(databaseName).collection("loginAttempts");

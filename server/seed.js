@@ -4,6 +4,7 @@ import { teamMembers } from "./team-seed-data.js";
 import { faqs } from "./faq-seed-data.js";
 import {
   faqsCollection,
+  loginAttemptsCollection,
   mongoClient,
   projectsCollection,
   sessionsCollection,
@@ -30,6 +31,7 @@ try {
   await seedCollection(teamMembersCollection, teamMembers);
   await seedCollection(faqsCollection, faqs);
   await sessionsCollection.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+  await loginAttemptsCollection.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 } finally {
   await mongoClient.close();
 }

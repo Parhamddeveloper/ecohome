@@ -86,7 +86,7 @@ export default function Account() {
           {registering && (
             <label className="grid gap-1">
               نام
-              <input name="name" autoComplete="name" maxLength={80} required className={inputClass} />
+              <input name="name" autoComplete="name" minLength={3} maxLength={80} required className={inputClass} />
             </label>
           )}
           <label className="grid gap-1">

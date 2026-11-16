@@ -1,7 +1,15 @@
 import { createHash, randomBytes } from "node:crypto";
 import express from "express";
-import { sessionsCollection as sessions, usersCollection as users } from "../server/database.js";
-import { hashPassword, needsPasswordUpgrade, verifyPassword } from "../server/passwords.js";
+import { releaseLoginAttempt, reserveLoginAttempt } from "../server/login-attempts.js";
+import {
+  sessionsCollection as sessions,
+  usersCollection as users,
+} from "../server/database.js";
+import {
+  hashPassword,
+  needsPasswordUpgrade,
+  verifyPassword,
+} from "../server/passwords.js";
 
 const app = express();
 app.disable("x-powered-by");
@@ -20,8 +28,12 @@ function hashToken(token) {
 }
 
 function sessionId(req) {
-  const cookies = (req.get("Cookie") ?? "").split(";").map((cookie) => cookie.trim());
-  const token = cookies.find((cookie) => cookie.startsWith(`${cookieName}=`))?.slice(cookieName.length + 1);
+  const cookies = (req.get("Cookie") ?? "")
+    .split(";")
+    .map((cookie) => cookie.trim());
+  const token = cookies
+    .find((cookie) => cookie.startsWith(`${cookieName}=`))
+    ?.slice(cookieName.length + 1);
   return token && /^[0-9a-f]{64}$/.test(token) ? hashToken(token) : null;
 }
 
@@ -31,8 +43,9 @@ function publicUser(user) {
 
 async function currentUser(req, res) {
   const id = sessionId(req);
-  const session = id && await sessions.findOne({ _id: id, expiresAt: { $gt: new Date() } });
-  const user = session && await users.findOne({ _id: session.userId });
+  const session =
+    id && (await sessions.findOne({ _id: id, expiresAt: { $gt: new Date() } }));
+  const user = session && (await users.findOne({ _id: session.userId }));
   res.json({ user: user ? publicUser(user) : null });
 }
 
@@ -52,17 +65,31 @@ async function establishSession(req, res, user, status) {
 async function authenticate(req, res) {
   const { action, email, password, name } = req.body ?? {};
   const address = typeof email === "string" ? email.trim().toLowerCase() : "";
-  if (!["register", "login"].includes(action) || address.length > 254 ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address) ||
-      typeof password !== "string" || password.length < 8 || password.length > 128) {
+  if (
+    !["register", "login"].includes(action) ||
+    address.length > 254 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address) ||
+    typeof password !== "string" ||
+    password.length < 8 ||
+    password.length > 128
+  ) {
     return res.status(400).json({ error: "ایمیل یا رمز عبور معتبر نیست." });
   }
 
   if (action === "login") {
+    const attempt = await reserveLoginAttempt(address);
+    if (!attempt.allowed) {
+      await releaseLoginAttempt(attempt.id);
+      return res.set("Retry-After", String(attempt.retryAfter)).status(429).json({
+        error: "تعداد تلاش‌های ورود زیاد است. کمی بعد دوباره تلاش کنید.",
+      });
+    }
+
     const user = await users.findOne({ _id: address });
-    if (!await verifyPassword(password, user?.credentials)) {
+    if (!(await verifyPassword(password, user?.credentials))) {
       return res.status(401).json({ error: "ایمیل یا رمز عبور اشتباه است." });
     }
+    await releaseLoginAttempt(attempt.id);
     if (needsPasswordUpgrade(user.credentials)) {
       const credentials = await hashPassword(password);
       await users.updateOne(
@@ -74,8 +101,10 @@ async function authenticate(req, res) {
   }
 
   const displayName = typeof name === "string" ? name.trim() : "";
-  if (!displayName || displayName.length > 80) {
-    return res.status(400).json({ error: "نام باید بین ۱ تا ۸۰ کاراکتر باشد." });
+  if (displayName.length < 3 || displayName.length > 80) {
+    return res
+      .status(400)
+      .json({ error: "نام باید بین ۳ تا ۸۰ کاراکتر باشد." });
   }
 
   const user = {
@@ -107,7 +136,8 @@ app.use("/api/auth", (_req, res, next) => {
   next();
 });
 
-app.route("/api/auth")
+app
+  .route("/api/auth")
   .get(currentUser)
   .post(express.json({ limit: "4kb" }), authenticate)
   .delete(logout);
