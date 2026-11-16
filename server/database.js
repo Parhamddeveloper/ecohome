@@ -9,6 +9,7 @@ export const weblogsCollection = mongoClient.db(databaseName).collection("weblog
 export const teamMembersCollection = mongoClient.db(databaseName).collection("teamMembers");
 export const teamSettingsCollection = mongoClient.db(databaseName).collection("teamSettings");
 export const faqsCollection = mongoClient.db(databaseName).collection("faqs");
+export const faqSettingsCollection = mongoClient.db(databaseName).collection("faqSettings");
 export const usersCollection = mongoClient.db(databaseName).collection("users");
 export const sessionsCollection = mongoClient.db(databaseName).collection("sessions");
 export const loginAttemptsCollection = mongoClient.db(databaseName).collection("loginAttempts");

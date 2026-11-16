@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { useContext, useEffect, useState } from "react";
+import { lazy, Suspense, useContext, useEffect, useState } from "react";
 import { SessionContext } from "../../../../context/SessionContext";
 import { Carousel } from "../../../../components/carousel/carousel";
 import TeamCarousel from "./TeamCarousel";
 import TeamMemberEditor from "./TeamMemberEditor";
-import TeamMemberOrder from "./TeamMemberOrder";
-export default function OurTeam() {
+const SortableOrder = lazy(() => import("../../../../components/SortableOrder"));
+
+export default function OurTeam({ embedded = false }) {
   const [team, setTeam] = useState({ status: "loading", members: [] });
   const { status, members } = team;
   const { user } = useContext(SessionContext);
@@ -46,7 +47,8 @@ export default function OurTeam() {
   }
 
   return (
-    <section className="pt-10 bg-[#fbf6f0] dark:bg-gray-800 overflow-hidden transition-colors duration-500">
+    <section className={embedded ? "" : "pt-10 bg-[#fbf6f0] dark:bg-gray-800 overflow-hidden transition-colors duration-500"}>
+      {!embedded && <>
       <motion.h2
         initial={{ y: 90, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
@@ -79,17 +81,22 @@ export default function OurTeam() {
           </Carousel>
         )}
       </motion.div>
-      {user?.role === "superadmin" && status === "ready" && members.length > 0 && (
-        <div className="mx-auto grid max-w-3xl gap-3 px-4 pb-8 font-estedad dark:text-white">
-          <h3 className="text-xl font-estedad-bold">مدیریت اعضای تیم</h3>
+      </>}
+      {embedded && status === "loading" && <p role="status">در حال بارگذاری اعضا…</p>}
+      {embedded && status === "error" && <p role="alert">بارگذاری اعضا انجام نشد.</p>}
+      {embedded && status === "ready" && members.length === 0 && <p>عضوی برای نمایش وجود ندارد.</p>}
+      {embedded && user?.role === "superadmin" && status === "ready" && members.length > 0 && (
+        <div className="grid gap-3 font-estedad dark:text-white">
           {message && <p role="status">{message}</p>}
           {editingMember ? (
             <TeamMemberEditor member={editingMember} onSave={saveMember} onCancel={() => setEditingId(null)} />
           ) : (
-            <TeamMemberOrder members={members} onSave={saveOrder} onEdit={(id) => {
-              setMessage("");
-              setEditingId(id);
-            }} />
+            <Suspense fallback={<p role="status">در حال بارگذاری فهرست…</p>}>
+              <SortableOrder items={members} endpoint="/api/team-members" onSave={saveOrder} onEdit={(id) => {
+                setMessage("");
+                setEditingId(id);
+              }} />
+            </Suspense>
           )}
         </div>
       )}

@@ -33,7 +33,7 @@ export default function BlogCart({ id, thumbnail, title, text, type }) {
           <h2 className="font-estedad-bold-extra">{title}</h2>
           <p className="text-sm font-estedad-light h-10">{text}</p>
         </div>
-        <Link className="text-sm flex items-center gap-x-1">
+        <Link to={`/weblogs/${id}`} className="text-sm flex items-center gap-x-1">
           دیدن مقاله <HiArrowLeft className="text-sm" />
         </Link>
       </div>

@@ -62,6 +62,11 @@ export default function Account() {
         <div className="flex flex-col gap-4">
           <p>{user.name}</p>
           <p dir="ltr" className="text-right">{user.email}</p>
+          {["admin", "superadmin"].includes(user.role) && (
+            <Link to="/dashboard" className="rounded-lg border border-[#869074] p-2 text-center">
+              داشبورد مدیریت
+            </Link>
+          )}
           <Link to="/edit-profile" className="rounded-lg bg-[#596348] p-2 text-center text-white">
             ویرایش اطلاعات
           </Link>

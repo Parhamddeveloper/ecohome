@@ -1,4 +1,8 @@
 import express from "express";
+import adminUsersApi from "../api/admin-users.js";
+import adminProjectsApi from "../api/admin-projects.js";
+import adminWeblogsApi from "../api/admin-weblogs.js";
+import mediaApi from "../api/media.js";
 import authApi from "../api/auth.js";
 import faqsApi from "../api/faqs.js";
 import projectsApi from "../api/projects.js";
@@ -8,7 +12,7 @@ import { mongoClient } from "./database.js";
 
 const app = express();
 app.disable("x-powered-by");
-app.use(projectsApi, weblogsApi, teamMembersApi, faqsApi, authApi);
+app.use(projectsApi, weblogsApi, teamMembersApi, faqsApi, authApi, adminUsersApi, adminProjectsApi, adminWeblogsApi, mediaApi);
 
 const port = Number(process.env.API_PORT || 3001);
 

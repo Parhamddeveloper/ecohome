@@ -1,6 +1,6 @@
 import express from "express";
 import { ObjectId } from "mongodb";
-import { faqsCollection } from "../server/database.js";
+import { faqsCollection, faqSettingsCollection } from "../server/database.js";
 import { requireRole } from "../server/roles.js";
 
 const app = express();
@@ -10,11 +10,29 @@ const projection = { _id: 0, id: 1, question: 1, answer: 1 };
 const activeFaq = { deletedAt: { $exists: false } };
 
 async function listFaqs(_req, res) {
-  const faqs = await faqsCollection.find(activeFaq, { projection }).sort({ id: 1 }).toArray();
-  res.json(faqs);
+  const [faqs, order] = await Promise.all([
+    faqsCollection.find(activeFaq, { projection }).sort({ id: 1 }).toArray(),
+    faqSettingsCollection.findOne({ _id: "displayOrder" }),
+  ]);
+  const positions = new Map((order?.ids ?? []).map((id, index) => [id, index]));
+  res.json(faqs.sort((first, second) =>
+    (positions.get(first.id) ?? faqs.length) - (positions.get(second.id) ?? faqs.length)));
 }
 
 const requireFaqEditor = requireRole("admin", "superadmin");
+
+async function reorderFaqs(req, res) {
+  const ids = req.body?.order;
+  if (!Array.isArray(ids)) return res.status(400).json({ error: "ترتیب سؤال‌ها معتبر نیست." });
+  const activeIds = await faqsCollection.distinct("id", activeFaq);
+  const requested = new Set(ids);
+  if (ids.length !== activeIds.length || requested.size !== ids.length ||
+      !activeIds.every((id) => requested.has(id))) {
+    return res.status(400).json({ error: "ترتیب باید شامل همهٔ سؤال‌های فعلی باشد." });
+  }
+  await faqSettingsCollection.updateOne({ _id: "displayOrder" }, { $set: { ids } }, { upsert: true });
+  res.status(204).end();
+}
 
 function requireFaqId(req, res, next) {
   const idParam = new URL(req.originalUrl, "http://localhost").searchParams.get("id");
@@ -86,7 +104,7 @@ async function deleteFaq(_req, res) {
 }
 
 function methodNotAllowed(_req, res) {
-  res.set("Allow", "GET, POST, PATCH, DELETE").status(405).json({ error: "Method not allowed" });
+  res.set("Allow", "GET, POST, PUT, PATCH, DELETE").status(405).json({ error: "Method not allowed" });
 }
 
 const readJson = express.json({ limit: "32kb" });
@@ -95,6 +113,7 @@ app.route("/api/faqs")
   .head(methodNotAllowed)
   .get(listFaqs)
   .post(requireFaqEditor, readJson, validateFaqFields, createFaq)
+  .put(requireFaqEditor, readJson, reorderFaqs)
   .patch(requireFaqEditor, requireFaqId, readJson, validateFaqFields, updateFaq)
   .delete(requireFaqEditor, requireFaqId, deleteFaq)
   .all(methodNotAllowed);

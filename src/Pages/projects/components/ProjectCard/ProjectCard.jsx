@@ -1,14 +1,9 @@
 import { HiArrowLeft } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { projectTypes } from "../../../../../data/project-types.js";
 
-export const CategoryTitle = {
-  residential: "مسکونی",
-  commercial: "تجاری",
-  renovation: "بازسازی",
-  interior: "طراحی داخلی",
-  eco: "طراحی پایدار",
-};
+export const CategoryTitle = projectTypes;
 export default function ProjectCard({id, thumbnail, title, text, type }) {
   return (
     <motion.div
@@ -32,7 +27,7 @@ export default function ProjectCard({id, thumbnail, title, text, type }) {
           <h2 className="font-estedad-bold-extra">{title}</h2>
           <p className="text-sm font-estedad-light h-10">{text}</p>
         </div>
-        <Link className="text-sm flex items-center gap-x-1">
+        <Link to={`/projects/${id}`} aria-label={`دیدن پروژهٔ ${title}`} className="text-sm flex items-center gap-x-1">
           دیدن پروژه <HiArrowLeft className="text-sm" />
         </Link>
       </div>

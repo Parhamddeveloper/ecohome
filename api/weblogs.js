@@ -1,12 +1,20 @@
 import express from "express";
 import { WEBLOG_SEARCH_LIMIT } from "../data/weblog-search.js";
 import { weblogsCollection } from "../server/database.js";
+import { parseProjectId } from "../server/project-id.js";
 
 const app = express();
 app.disable("x-powered-by");
 
 async function listWeblogs(req, res) {
   const params = new URL(req.originalUrl, "http://localhost").searchParams;
+  if (params.has("id")) {
+    const id = parseProjectId(params.get("id"));
+    if (id === null) return res.status(400).json({ error: "Invalid article id" });
+    const article = await weblogsCollection.findOne({ id }, { projection: { _id: 0 } });
+    if (!article) return res.status(404).json({ error: "Article not found" });
+    return res.json(article);
+  }
   const type = params.get("type");
   const query = params.get("q") ?? "";
   if (query.length > WEBLOG_SEARCH_LIMIT) {

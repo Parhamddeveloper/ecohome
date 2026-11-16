@@ -1,17 +1,19 @@
-import { useContext, useEffect, useState } from "react";
+import { lazy, Suspense, useContext, useEffect, useState } from "react";
 import { SessionContext } from "../../../context/SessionContext";
 import Accordion from "../../../components/accordion/Accordion";
 import FaqEditor from "./FaqEditor";
+const SortableOrder = lazy(() => import("../../../components/SortableOrder"));
 
-export default function AccordionSect() {
+export default function AccordionSect({ embedded = false }) {
   const [catalog, setCatalog] = useState({ status: "loading", faqs: [] });
   const { status, faqs } = catalog;
   const { user } = useContext(SessionContext);
-  const canEdit = ["admin", "superadmin"].includes(user?.role);
+  const canEdit = embedded && ["admin", "superadmin"].includes(user?.role);
   const [action, setAction] = useState(null);
   const [deleting, setDeleting] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const sorting = canEdit && action?.mode === "sort";
 
   useEffect(() => {
     const controller = new AbortController();
@@ -68,15 +70,36 @@ export default function AccordionSect() {
   }
 
   return (
-    <section className="bg-[#fbf6f0] dark:bg-gray-500 py-4 transition-colors duration-500">
-        <h1 className="text-center text-2xl font-estedad-extra-bold dark:text-white">سوالات متداول</h1>
-      <div className="flex flex-col gap-y-4 max-w-7xl mx-auto mt-7 px-3">
+    <section className={embedded ? "" : "bg-[#fbf6f0] dark:bg-gray-500 py-4 transition-colors duration-500"}>
+      {!embedded && <h1 className="text-center text-2xl font-estedad-extra-bold dark:text-white">سوالات متداول</h1>}
+      <div className={`flex flex-col gap-y-4 ${embedded ? "" : "max-w-7xl mx-auto mt-7 px-3"}`}>
         {message && <p role="status" className="font-estedad dark:text-white">{message}</p>}
         {error && <p role="alert" className="font-estedad dark:text-white">{error}</p>}
         {canEdit && status === "ready" && action === null && (
+          <div className="flex flex-wrap gap-2">
           <button type="button" onClick={() => openAction("create")} className="self-start rounded-lg bg-[#596348] px-4 py-2 font-estedad text-white">
             افزودن سؤال
           </button>
+          {faqs.length > 1 && (
+            <button type="button" onClick={() => openAction("sort")} className="rounded-lg border px-4 py-2">
+              مرتب‌سازی سؤال‌ها
+            </button>
+          )}
+          </div>
+        )}
+        {sorting && (
+          <Suspense fallback={<p role="status">در حال بارگذاری مرتب‌سازی…</p>}>
+            <SortableOrder items={faqs.map((faq) => ({ ...faq, name: faq.question }))}
+              endpoint="/api/faqs" onSave={(ordered) => {
+                const byId = new Map(faqs.map((faq) => [faq.id, faq]));
+                setCatalog({ status: "ready", faqs: ordered.map(({ id }) => byId.get(id)) });
+                setAction(null);
+                setMessage("ترتیب سؤال‌ها ذخیره شد.");
+              }} />
+            <button type="button" onClick={() => setAction(null)} className="self-start rounded-lg border px-4 py-2">
+              بازگشت به سؤال‌ها
+            </button>
+          </Suspense>
         )}
         {canEdit && action?.mode === "create" && (
           <FaqEditor onSave={saveFaq} onCancel={() => setAction(null)} />
@@ -84,7 +107,7 @@ export default function AccordionSect() {
         {status === "loading" && <p role="status" className="text-center dark:text-white">در حال بارگذاری سؤال‌ها…</p>}
         {status === "error" && <p role="alert" className="text-center dark:text-white">بارگذاری سؤال‌ها انجام نشد.</p>}
         {status === "ready" && faqs.length === 0 && <p className="text-center dark:text-white">سؤالی برای نمایش وجود ندارد.</p>}
-        {faqs.map((faq) => (
+        {!sorting && faqs.map((faq) => (
           <div key={faq.id} className="grid gap-2">
             <Accordion {...faq} />
             {canEdit && action?.mode === "edit" && action.id === faq.id && (
